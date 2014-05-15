@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Scripts</h2>
+  <a class="btn btn-primary" href="{% url 'script_create_view' %}">Add New Script</a>
+  <div>
+    {% for script in object_list %}
+      <a href="{% url 'script_detail_view' script.pk %}">{{ script }}</a><br />
+    {% endfor %}
+  </div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>People</h2>
+  <a class="btn btn-primary" href="{% url 'person_create_view' %}">Add New Person</a>
+  {% for person in object_list %}
+    <h3>{{ person.name }}</h3>
+    {{ person.title }}<br />
+    {{ person.institution }} (<a href="{% url 'person_by_type_list_view' person.library_type %}">{{ person.library_type }}</a>)<br />
+    Role(s):
+      {% for role in person.library_role.all %}
+        {{ role }}{% if not forloop.last %}, {% endif %}
+      {% endfor %}
+    {% if person.questionnaire %}
+      <br />
+      <a href="{% url 'questionnaire_detail_view' person.questionnaire.pk %}">
+        Questionnaire
+      </a>
+    {% endif %}
+    {% if person.scripts %}
+      <h4>Script(s)</h4>
+      {% for script in person.scripts %}
+      <a href="{% url 'script_detail_view' script.pk %}">
+        {{ script }}
+      </a><br />
+      {% endfor %}
+    {% endif %}
+    <hr/>
+  {% endfor %}
+{% endblock %}

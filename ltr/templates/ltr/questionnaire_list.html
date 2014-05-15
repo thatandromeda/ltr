@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Questionnaires</h2>
+  <a class="btn btn-primary" href="{% url 'questionnaire_create_view' %}">Add New Questionnaire</a>
+  <div>
+    {% for questionnaire in object_list %}
+      <a href="{% url 'questionnaire_detail_view' questionnaire.pk %}">{{ questionnaire }}</a><br />
+    {% endfor %}
+  </div>
+{% endblock %}
