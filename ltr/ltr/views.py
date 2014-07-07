@@ -1,8 +1,10 @@
 from django.core.urlresolvers import reverse_lazy
+from django.http import HttpResponseRedirect
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView
 
 from taggit.models import TaggedItem
+from .forms import BetterQuestionnaireForm
 from .models import Person, Questionnaire, Script
 
 #
@@ -73,7 +75,17 @@ class QuestionnaireListView(ListView):
 
 class QuestionnaireCreateView(LTRCreateView):
     model = Questionnaire
+    form_class = BetterQuestionnaireForm
     success_url = reverse_lazy('questionnaire_list_view')
+
+    def form_valid(self, form):
+        person = form.cleaned_data.pop('person')
+        response = super(QuestionnaireCreateView, self).form_valid(form)
+        if person:
+            # Add the FK relation between questionnaire and person if needed.
+            person.questionnaire = form.instance
+            person.save()
+        return response
 
 class QuestionnaireDetailView(DetailView):
     model = Questionnaire

@@ -8,6 +8,7 @@ class Questionnaire(models.Model):
     q3 = models.TextField(help_text="Have you had support from your employer in learning to code/spending that much time coding?")
     q4 = models.TextField(help_text="What would you recommend to someone implementing code like this/what did you learn?")
     q5 = models.TextField(help_text="What would you recommend to someone who wanted to learn to write code like this?")
+    q6 = models.TextField(null=True, blank=True, help_text="If you're a manager, how have you supported employees in learning to code?")
     tags = TaggableManager(blank=True)
     
     @property
