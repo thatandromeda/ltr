@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Questionnaire: <a href="{{ object.person.all.0.get_absolute_url }}">{{ object.name }}</a></h2>
+  
+  <h3>Tags</h3>
+  {% for tag in object.tags.all %}
+    <a href="{% url 'tag_view' tag.pk %}">{{ tag }}</a><br />
+  {% endfor %}
+
+  <h3>Questions</h3>
+
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        Tell me a bit about you &mdash; your job, your institution.
+      </h3>
+    </div>
+    <div class="panel-body">
+      {{ object.q1 }}
+    </div>
+  </div>
+  <br />
+
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        How much of your job is about coding? Do you have any formal code
+        responsibilities, or is this simply a skill that you bring to your
+        formal responsibilities?
+      </h3>
+    </div>
+    <div class="panel-body">
+      {{ object.q2 }}
+    </div>
+  </div>
+  <br />
+
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        Have you had support from your employer in learning to code/spending
+        that much time coding?
+      </h3>
+    </div>
+    <div class="panel-body">
+      {{ object.q3 }}
+    </div>
+  </div>
+  <br />
+
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        What would you recommend to someone implementing code like this/what
+        did you learn?
+      </h3>
+    </div>
+    <div class="panel-body">
+      {{ object.q4 }}
+    </div>
+  </div>
+  <br />
+
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        What would you recommend to someone who wanted to learn to write code
+        like this?
+      </h3>
+    </div>
+    <div class="panel-body">
+      {{ object.q5 }}
+    </div>
+  </div>
+  <br />
+
+  {% if object.q6 %}
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          If you're a manager, how have you supported employees in learning to
+          code?
+        </h3>
+      </div>
+      <div class="panel-body">
+        {{ object.q6 }}
+      </div>
+    </div>
+  {% endif %}
+  
+  <h3>Scripts</h3>
+  
+  {% for script in object.script.all %}
+    <a href="{{ script.get_absolute_url }}">{{ script }}</a>
+  {% endfor %}
+
+{% endblock %}    

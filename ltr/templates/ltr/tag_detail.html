@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Tagged with "{{ object.name }}"</h2>
+  <br />
+
+  {% if tagged_people %}
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          Persons
+        </h3>
+      </div>
+      <div class="panel-body">
+        {% for person in tagged_people %}
+          <a href="{{ person.get_absolute_url }}">{{ person }}</a>
+          {% if not forloop.last %}<br />{% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    <br />
+  {% endif %}
+  
+  {% if tagged_scripts %}
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          Scripts
+        </h3>
+      </div>
+      <div class="panel-body">
+        {% for script in tagged_scripts %}
+          <a href="{{ script.get_absolute_url }}">{{ script }}</a>
+          {% if not forloop.last %}<br />{% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    <br />
+  {% endif %}
+  
+  {% if tagged_questionnaires %}
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          Questionnaires
+        </h3>
+      </div>
+      <div class="panel-body">
+        {% for questionnaire in tagged_questionnaires %}
+          <a href="{{ questionnaire.get_absolute_url }}">{{ person }}</a>
+          {% if not forloop.last %}<br />{% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+  
+{% endblock %}
+
+    library_type = models.CharField(max_length=3,
+                                      choices=TYPE_CHOICES)
+    library_role = TaggableManager()
+    questionnaire = models.ForeignKey(Questionnaire, db_index = True, related_name="person", null=True, blank=True)

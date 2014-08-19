@@ -1,9 +1,10 @@
+from django.core.urlresolvers import reverse
 from django.db import models
 from taggit.managers import TaggableManager
 
 class Questionnaire(models.Model):
     name = models.CharField(max_length=50)    
-    q1 = models.TextField(help_text="Tell me a bit about you -- your job, your institution.")
+    q1 = models.TextField(help_text="Tell me a bit about you -- your job, your institution.", blank=True, null=True)
     q2 = models.TextField(help_text="How much of your job is about coding?  Do you have any formal code responsibilities, or is this simply a skill that you bring to your formal responsibilities?")
     q3 = models.TextField(help_text="Have you had support from your employer in learning to code/spending that much time coding?")
     q4 = models.TextField(help_text="What would you recommend to someone implementing code like this/what did you learn?")
@@ -19,11 +20,17 @@ class Questionnaire(models.Model):
         except IndexError, AttributeError:
             return None
 
+    def get_absolute_url(self):
+        return reverse('questionnaire_detail_view', args=(self.pk,))
+
     def __unicode__(self):
         if self.first_owner:
             return self.first_owner + "'s questionnaire"
         else:
             return self.name
+
+    class Meta:
+        ordering = ['name']
 
 class Person(models.Model):
 
@@ -43,15 +50,21 @@ class Person(models.Model):
     library_type = models.CharField(max_length=3,
                                       choices=TYPE_CHOICES)
     library_role = TaggableManager()
-    contacted_on = models.DateField()
     questionnaire = models.ForeignKey(Questionnaire, db_index = True, related_name="person", null=True, blank=True)
 
     @property
     def scripts(self):
         return Script.objects.filter(questionnaire=self.questionnaire)
 
+    def get_absolute_url(self):
+        return reverse('person_detail_view', args=(self.pk,))
+
     def __unicode__(self):
         return self.name
+
+    class Meta:
+        ordering = ['name']
+
 
 class Script(models.Model):
     name = models.CharField(max_length=50)
@@ -62,6 +75,9 @@ class Script(models.Model):
     permission = models.BooleanField(default=False)
     permission_notes = models.CharField(max_length=50, null=True, blank=True)
     questionnaire = models.ForeignKey(Questionnaire, db_index = True, related_name="script", null=True, blank=True)
+
+    def get_absolute_url(self):
+        return reverse('script_detail_view', args=(self.pk,))
 
     def __unicode__(self):
         try:

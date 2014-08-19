@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>{{ object.name }}</h2>
+  
+  <h3>Tags</h3>
+  {% for tag in object.language.all %}
+    <a href="{% url 'tag_view' tag.pk %}">{{ tag }}</a><br />
+  {% endfor %}
+  
+  <h3>Problem solved</h3>
+  {{ object.problem_solved }}
+
+  <h3>Impact</h3>
+  {{ object.impact }}
+
+  <h3>Source</h3>
+  {{ object.source }} {% if not object.permission %}<strong>No permissions</strong>{% endif %}
+  
+  <h3>Questionnaire</h3>
+  <a href="{{ object.questionnaire.get_absolute_url }}">{{ object.questionnaire }}</a>
+{% endblock %}

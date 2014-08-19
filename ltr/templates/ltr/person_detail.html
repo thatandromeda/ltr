@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>{{ object.name }}</h2>
+  <p class="lead">
+    {{ object.title }}
+  </p>
+  <p>
+    {{ object.institution }}
+  </p>
+  
+  <h3>Role(s)</h3>
+  {% for tag in object.library_role.all %}
+    <a href="{% url 'tag_view' tag.pk %}">{{ tag }}</a><br />
+  {% endfor %}
+  
+  <h3>Questionnaire</h3>
+  <a href="{{ object.questionnaire.get_absolute_url }}">{{ object.questionnaire }}</a>
+
+  <h3>Script(s)</h3>
+  {% for script in object.questionnaire.script.all %}
+    <a href="{{ script.get_absolute_url }}">{{ script }}</a><br/>
+  {% endfor %}
+{% endblock %}
+
+    library_type = models.CharField(max_length=3,
+                                      choices=TYPE_CHOICES)
+    library_role = TaggableManager()
+    questionnaire = models.ForeignKey(Questionnaire, db_index = True, related_name="person", null=True, blank=True)

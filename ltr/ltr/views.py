@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView
 
-from taggit.models import TaggedItem
+from taggit.models import TaggedItem, Tag
 from .forms import BetterQuestionnaireForm
 from .models import Person, Questionnaire, Script
 
@@ -30,6 +30,23 @@ class LTRCreateView(CreateView):
         context['questionnaire_tags'] = generic_tagged_item.tags_for(Questionnaire).extra(\
             select={'lower_name':'lower(name)'}).order_by('lower_name')
         return context
+
+
+class TagView(DetailView):
+    model = Tag
+    template_name = "ltr/tag_detail.html"
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super(TagView, self).get_context_data(*args, **kwargs)
+        tag_name = self.get_object().name
+        context['tagged_people'] = \
+            Person.objects.filter(library_role__name__in=[tag_name])
+        context['tagged_scripts'] = \
+            Script.objects.filter(language__name__in=[tag_name])
+        context['tagged_questionnaires'] = \
+            Questionnaire.objects.filter(tags__name__in=[tag_name])
+        return context
+
 
 
 #

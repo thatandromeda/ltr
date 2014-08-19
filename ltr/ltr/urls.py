@@ -55,4 +55,8 @@ urlpatterns = patterns('',
     url(r'^persons/', include(person_pages)),
     url(r'^scripts/', include(script_pages)),
     url(r'^questionnaires/', include(questionnaire_pages)),
+
+    url(r'^tags/(?P<pk>[0-9]+)/$', 
+        views.TagView.as_view(),
+        name='tag_view'),
 )
