@@ -10,17 +10,21 @@
 
   <h3>Questions</h3>
 
-  <div class="panel panel-info">
-    <div class="panel-heading">
-      <h3 class="panel-title">
-        Tell me a bit about you &mdash; your job, your institution.
-      </h3>
-    </div>
-    <div class="panel-body">
-      {{ object.q1 }}
-    </div>
-  </div>
-  <br />
+  {% if object.q1 %}
+    {% ifnotequal object.q1 "n/a" %}
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            Tell me a bit about you &mdash; your job, your institution.
+          </h3>
+        </div>
+        <div class="panel-body">
+          {{ object.q1 }}
+        </div>
+      </div>
+      <br />
+    {% endifnotequal %}
+  {% endif %}
 
   <div class="panel panel-info">
     <div class="panel-heading">

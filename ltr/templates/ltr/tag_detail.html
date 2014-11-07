@@ -47,7 +47,7 @@
       </div>
       <div class="panel-body">
         {% for questionnaire in tagged_questionnaires %}
-          <a href="{{ questionnaire.get_absolute_url }}">{{ person }}</a>
+          <a href="{{ questionnaire.get_absolute_url }}">{{ questionnaire }}</a>
           {% if not forloop.last %}<br />{% endif %}
         {% endfor %}
       </div>
