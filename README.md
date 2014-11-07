@@ -11,6 +11,8 @@ This assumes that you have installed [virtualenvwrapper](http://virtualenvwrappe
 * `pip install -r requirements.txt`
 * `python ltr/manage.py runserver`
 * point your browser at `127.0.0.1:8000`
+* (when you're done playing around for now) `deactivate`
+* (next time you want to play around, you'll need to `workon ltr` again, but you won't need to install the requirements unless they have been updated)
 
 I haven't made a home page template, so you'll get an error message at that page, but it will list the URLs it does know about. There's no content yet (the `.gitignore` keeps my sqlite3 database out of the repository, because you shouldn't have my raw research data), so go ahead and add your own to see what it looks like! (Don't worry; your .sqlite3 files will be kept out of the repo, too.)
 
