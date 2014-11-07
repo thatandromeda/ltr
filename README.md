@@ -35,3 +35,5 @@ You are welcome to use this repository as a basis for learning Django and improv
 * adding delete and edit pages (use Django's built-in `DeleteView` and `UpdateView`)
 * adding a page which lists all the tags in the system, with links to the tag detail pages
 * improving the workflow for adding new people with their surveys and questionnaires (I have made it only as good as it needed to be to not outright irritate me; the usability's still not great)
+
+Pull requests welcome.
