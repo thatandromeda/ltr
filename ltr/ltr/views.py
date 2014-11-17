@@ -47,7 +47,12 @@ class TagView(DetailView):
             Questionnaire.objects.filter(tags__name__in=[tag_name])
         return context
 
+class AllTagsView(ListView):
+    template_name = "ltr/tag_list.html"
 
+    def get_queryset(self, **kwargs):
+        tags = Tag.objects.all().order_by('name')
+        return tags
 
 #
 # Person views
