@@ -1,0 +1,604 @@
+<!--
+TODO:
+* deal with quotes
+* organize css
+* rewrite nth-child rule for bootstrap rows so that things flow appropriately. sigh.
+* if you care, alphabetize the filter buttons. (.sort() will do this, but you'll need to build the
+  entire list of keys before appending the buttons.)
+-->
+
+<html>
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+  <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+  <style type="text/css">
+    /*
+      incredibly obnoxious colors via google material design:
+      pink  #E91E63
+      purple #9C27B0
+      deep purple #673AB7
+      indigo #3F51B5
+      green #4CAF50
+      deep orange #FF5722
+    */
+    p.libtype, p.demo {
+      display: none;
+    }
+
+    body {
+      font-family: 'Droid Sans', Helvetica, sans-serif;
+      font-size: 18px;
+      color: white;
+      background-color: #4CAF50;
+    }
+
+    /* thanks webtypography.net. Of course those multiples-of-16 are now a lie. */
+    h1 { font-size: 2.25em;  /* 16x2.25=36 */ }
+    h2 { font-size: 1.5em;   /* 16x1.5=24 */ }
+    p, ul { font-size: 1.125em; /* 16x1.125=18 */ }
+    p.small, p.language { font-size: 0.875em; /* 16x0.875=14 */ }
+    .btn-xs {font-size: 0.75em;  /* 16x0.75=12 */ }
+
+    .tile[style*="display: none"] {
+      /* no, seriously, don't take up any space */
+      width: 0;
+      height: 0;
+      padding: 0 !important;
+      min-height: 0;
+    }
+
+    .tile {
+      border-bottom: 1px solid white;
+      border-right: 1px solid white;
+    }
+
+    .page-header {
+      background-color: #4CAF50;
+    }
+
+    h1 {
+      font-weight: bold;
+    }
+
+    h1 small {
+      color: white;
+    }
+
+    h2.use {
+      font-family: Lobster;
+    }
+
+    a {
+      color: white;
+    }
+
+    .btn-xs {
+      color: #666;
+    }
+
+    #header ul, .small-caps {
+      font-variant: small-caps;
+    }
+
+    #header ul a:hover {
+      text-decoration: none;
+      border-bottom: 5px solid;
+      color: #ccc;
+    }
+
+    /* Clear ends of rows to preserve vertical spacing when for-looping through
+       lists of tiles.
+
+       See http://www.bluthemes.com/blog/3/clearing-bootstrap-3-columns.
+       This is modified for Bootstrap 2, which is our version.
+       SO MUCH EASIER than throwing a |divisibleby into the for loop to break
+       and restart the row-fluid div at the end of each row.
+       Probably doesn't work on versions of IE below 8. Oh well.
+    */
+
+    .clear-columns > .tile {
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+
+    .clear-columns .col-sm-6:nth-child(2n+1){
+      clear: left;
+      margin-left: 0;
+    }
+
+    /* same logic, but for colors */
+    .clear-columns .col-sm-6:nth-child(3n+1){
+      background-color: #9C27B0;
+    }
+
+    .clear-columns .col-sm-6:nth-child(3n+2){
+      background-color: #FF5722;
+    }
+
+    .clear-columns .col-sm-6:nth-child(3n+3){
+      background-color: #E91E63;
+    }
+
+    .js-hide {
+      /* Hide things that require js to be shown; a script will reveal them on document ready. */
+      display: none;
+    }
+
+    #filters {
+      /* This has its own show/hide toggle, because it takes up lots of space. */
+      display: none;
+    }
+
+    #show-filters span.show-filters {
+      display: inherit;
+    }
+    #show-filters span.hide-filters {
+      display: none;
+    }
+
+    #show-filters.active span.show-filters {
+      display: none;
+    }
+    #show-filters.active span.hide-filters {
+      display: inherit;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="header" class="page-header container-fluid">
+    <div class="row">
+      <div class="col-xs-12">
+        <h1>Coding for Librarians: Learning by Example <small>by Andromeda Yelton</small></h1>
+        <ul class="list-inline list-unstyled">
+          <li><a href="">get the book</a></p></li>
+          <li><a href="book.html">about the book</a></p></li>
+          <li><a href="site.html">about the site</a></p></li>
+        </ul>        
+      </div>
+    </div>
+  </div>
+  <div id="tagline" class="container-fluid">
+    <div class="row">
+      <div class="col-xs-12">
+        <p class="pull-left">
+          Librarians write short programs to make their lives better. You can, too.
+        </p>
+        <button class="pull-right btn btn-default btn-xs js-hide" id="show-filters"><span class='show-filters'>show filters</span><span class='hide-filters'>hide filters</span></button>
+      </div>
+    </div>
+  </div>
+  <hr />
+  <div id="filters">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-12">
+          <p class="small-caps">Filter by language</p>
+          <div id="filter-languages">
+          </div>
+
+          <br />
+          <p class="small-caps">or library type</p>
+          <div id="filter-libtype">
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr />
+  </div>
+  <div id="main" class="container-fluid">
+    <div class="row clear-columns">
+      <div class="tile col-sm-6">
+        <h2 class="use">in-browser text editor</h2>
+        <p class="name">Erin White <span class="small">Virginia Commonwealth University &mdash; Web Systems Librarian</span></p>
+        <p class="libtype academic"></p>
+        <p class="language html javascript">html, javascript</p>
+        <p class="demo"></p>
+        <p class="link"><a class="btn btn-default btn-xs" href="https://github.com/erinrwhite/browser-start-page">get the code</a></p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">ILS reporting</h2>
+        <p class="name">Esther Verreau <span class="small">Skokie Public Library &mdash; Web Developer</span></p>
+        <p class="libtype public"></p>
+        <p class="language python">python</p>
+        <p class="link"><a class="btn btn-default btn-xs" href="https://github.com/everreau/sierra-scripts">get the code</a></p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">web database of local archives</h2>
+        <p class="name">Michael Holt <span class="small">Valdosta State University Odum Library &mdash;Reference Librarian/Marketing Coordinator</span></p>
+        <p class="libtype academic"></p>
+        <p class="language php mysql javascript">php, mysql, javascript</p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">staff communication</h2>
+        <p class="name">Hillel Arnold <span class="small">Rockefeller Archive Center &mdash; Lead Digital Archivist</span></p>
+        <p class="libtype archives"></p>
+        <p class="language javascript">javascript</p>
+        <p class="link"><a class="btn btn-default btn-xs" href="https://github.com/RockefellerArchiveCenter/captains-log">get the code</a></p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">MARC data migration</h2>
+        <p class="name">Joy Nelson <span class="small">ByWater Solutions &mdash; Director of Migrations</span></p>
+        <p class="libtype vendor"></p>
+        <p class="language perl">perl</p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">simplified FTP workflow</h2>
+        <p class="name">Christine Moulen <span class="small">Massachusetts Institute of Technology &mdash; Library Systems Manager</span></p>
+        <p class="libtype academic"></p>
+        <p class="language perl">perl</p>
+        <p class="link"><a class="btn btn-default btn-xs" href="https://developers.exlibrisgroup.com/resources/aleph/code_contributions/get_vendor_edi.pl">get the code</a></p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">finding available children's books faster</h2>
+        <p class="name">Mike Drake <span class="small">Tulare County Library &mdash; Deputy Director</span></p>
+        <p class="libtype public"></p>
+        <p class="language perl">perl</p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">microdata prototype</h2>
+        <p class="name">Mike Giarlo <span class="small">Penn State University &mdash; Digital Library Architect</span></p>
+        <p class="libtype academic"></p>
+        <p class="language ruby">ruby</p>
+        <p class="link"><a class="btn btn-default btn-xs" href="https://github.com/mjgiarlo/sitemapmicrodata/blob/master/extract.rb">get the code</a></p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">preparing files for repository ingest</h2>
+        <p class="name">Terry Brady <span class="small">Georgetown University &mdash; Applications Programmer Analyst</span></p>
+        <p class="libtype academic"></p>
+        <p class="language java">java</p>
+        <p class="link"><a class="btn btn-default btn-xs" href=" https://github.com/Georgetown-University-Libraries/File-Analyzer/blob/master/dspace/src/main/edu/georgetown/library/fileAnalyzer/importer/IngestFolderCreate.java">get the code</a></p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">automating PDF and METS file creation so users can have archival content</h2>
+        <p class="name">Shaun Ellis <span class="small">Princeton University Library &mdash; User Interface Developer</span></p>
+        <p class="libtype academic"></p>
+        <p class="language ruby">ruby</p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">automatically georeferencing images</h2>
+        <p class="name">Sarah Simpkin <span class="small">University of Ottawa &mdash; GIS and Geography Librarian</span></p>
+        <p class="name">script by Brian Bancroft</p>
+        <p class="libtype academic"></p>
+        <p class="language python">python</p>
+        <p class="link"><a class="btn btn-default btn-xs" href="https://github.com/brian2073/MassGeorefAndWebPrepare">get the code</a></p>
+        <p class="link"><a class="btn btn-default btn-xs" href="http://ssimpkin.github.io/2014/04/29/software-carpentry/">learn more</a></p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">quality control for MARC records</h2>
+        <p class="name">Annie Glerum <span class="small">Florida State University Libraries &mdash; Head of Complex Cataloging</span></p>
+        <p class="libtype academic"></p>
+        <p class="language xslt">xslt</p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">comparing ISBNs of potential purchases against holdings</h2>
+        <p class="name">Matthew S. Collins <span class="small">Louisville Presbyterian Theological Seminary &mdash; Director of the Library and Associate Professor</span></p>
+        <p class="libtype academic"></p>
+        <p class="language python">python</p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">faster institutional repository</h2>
+        <p class="name">Esme Cowles <span class="small">UC San Diego Library &mdash; Lead Product Developer</span></p>
+        <p class="libtype academic"></p>
+        <p class="language ruby">ruby</p>
+        <p class="link"><a class="btn btn-default btn-xs" href="https://github.com/ucsdlib/damspas/blob/develop/app/controllers/file_controller.rb#L5">get the code</a></p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">subject access to research databases</h2>
+        <p class="name">Jason Simon <span class="small">Fitchburg State University &mdash; Technology &amp; Serials Librarian ; Designing Minds Consulting</span></p>
+        <p class="libtype academic"></p>
+        <p class="language php mysql xml">php, mysql, xml</p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">adding ContentDM search options</h2>
+        <p class="name">Joel Marchesoni <span class="small">Hunter Library at Western Carolina University &mdash; Tech Support Analyst</span></p>
+        <p class="libtype academic"></p>
+        <p class="language asp">asp</p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">organizing LibGuides</h2>
+        <p class="name">Jeremy Darrington <span class="small">Princeton University Library &mdash; Politics Librarian</span></p>
+        <p class="libtype academic"></p>
+        <p class="language javascript">javascript</p>
+        <p class="demo"></p>
+        <p class="link"><a class="btn btn-default btn-xs" href="https://www.princeton.edu/~jdarring/js/autoTocNav.js">get the code</a></p>
+        <p class="link"><a class="btn btn-default btn-xs" href="http://libguides.princeton.edu/content.php?pid=254621&sid=2824241">learn more</a></p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">cleaning up a spreadsheet of metadata</h2>
+        <p class="name">Ruth Szpunar <span class="small">DePauw University &mdash; Reference and Instruction Librarian</span></p>
+        <p class="libtype academic"></p>
+        <p class="language vba">vba</p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">checking file metadata faster</h2>
+        <p class="name">Josh Westgard <span class="small">University of Maryland Libraries &mdash; Graduate Assistant, Digital Programs and Initiatives</span></p>
+        <p class="libtype academic"></p>
+        <p class="language awk python">awk, python</p>
+        <p class="link"><a class="btn btn-default btn-xs" href="https://github.com/jwestgard/file-mgmt/blob/master/avgsize.aw">get the code</a></p>
+        <p class="link"><a class="btn btn-default btn-xs" href="https://github.com/jwestgard/file-mgmt/blob/master/align-cmd.py">get the code</a></p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">extracting acquisitions data from ILS into XML for mashup fun</h2>
+        <p class="name">Ron Gilmour <span class="small">Ithaca College Library &mdash; Web Services Librarian</span></p>
+        <p class="libtype academic"></p>
+        <p class="language perl">perl</p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">converting MARC21 to BIBFRAME RDF graph</h2>
+        <p class="name">Jeremy Nelson <span class="small">Tutt Library, Colorado College &mdash; Metadata and Systems Librarian</span></p>
+        <p class="libtype academic"></p>
+        <p class="language python">python</p>
+        <p class="link"><a class="btn btn-default btn-xs" href="https://github.com/jermnelson/bibframe-socket">get the code</a></p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">visualizing medieval manuscripts</h2>
+        <p class="name">Dot Porter <span class="small">Schoenberg Institute for Manuscript Studies, Kislak Center for Special Collections, Rare Books and Manuscripts, University of Pennsylvania &mdash; Curator, Digital Research Services</span></p>
+        <p class="libtype academic"></p>
+        <p class="language xslt">xslt</p>
+        <p class="link"><a class="btn btn-default btn-xs" href="https://github.com/leoba/VisColl ">get the code</a></p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">automated knowledgebase updates</h2>
+        <p class="name">Owen Stephens <span class="small">Independent Consultant</span></p>
+        <p class="libtype consultant"></p>
+        <p class="language ruby">ruby</p>
+        <p class="link"><a class="btn btn-default btn-xs" href="http://www.meanboyfriend.com/overdue_ideas/2014/03/automatic-love/">learn more</a></p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">autocompletion in database search</h2>
+        <p class="name">Amy Wharton <span class="small">University of Virginia School of Law Library &mdash; Research &amp; Emerging Technologies Librarian</span></p>
+        <p class="libtype academic"></p>
+        <p class="language javascript">javascript</p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">adds book cover images to Blacklight search results</h2>
+        <p class="name">Chris Fitzpatrick <span class="small">Lyrasis &mdash; ArchivesSpace Developer</span></p>
+        <p class="libtype vendor"></p>
+        <p class="language coffeescript">coffeescript</p>
+        <p class="link"><a class="btn btn-default btn-xs" href="https://gist.github.com/cfitz/5265810">get the code</a></p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">LOCKSS progress reports</h2>
+        <p class="name">Joe Montibello <span class="small">Dartmouth College &mdash; Library Systems Manager</span></p>
+        <p class="libtype academic"></p>
+        <p class="language python">python</p>
+        <p class="link"><a class="btn btn-default btn-xs" href="https://github.com/joemontibello/update-lockss">get the code</a></p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">improved ILS reporting</h2>
+        <p class="name">Cindy Harper <span class="small">Virginia Theological Seminary &mdash; Electronic Services and Serials Librarian</span></p>
+        <p class="libtype academic"></p>
+        <p class="language vba">vba</p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">autogenerated accessible alternatives</h2>
+        <p class="name">Rachel Donahue <span class="small">Special Collections, National Agricultural Library &mdash; Digital Projects Librarian</span></p>
+        <p class="libtype special"></p>
+        <p class="language ruby">ruby</p>
+        <p class="link"><a class="btn btn-default btn-xs" href="https://github.com/sheepeeh/NAL_metadata">get the code</a></p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">super-fast, large-scale content ingest</h2>
+        <p class="name">Scott Turnbull <span class="small">University of Virginia &mdash; Lead Software &amp; Systems Engineer</span></p>
+        <p class="libtype academic"></p>
+        <p class="language go">go</p>
+        <p class="link"><a class="btn btn-default btn-xs" href="https://github.com/APTrust/bagins">get the code</a></p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">identifying candidates for de-accessioning across a consortium</h2>
+        <p class="name">Sam Kome <span class="small">Claremont Colleges Library &mdash; Director, Collection Services and Scholarly Communication</span></p>
+        <p class="libtype academic"></p>
+        <p class="language python">python</p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">parsing robots.txt files to find attack bots</h2>
+        <p class="name">Stuart Yeates <span class="small">Victoria University of Wellington &mdash; Technical Specialist</span></p>
+        <p class="libtype academic"></p>
+        <p class="language bash">bash</p>
+        <p class="link"><code>tail -100000  /var/log/httpd/access-nzetc.log |grep facet  |awk '{print $1}'|sort | uniq -c | sort -n</code></p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">aggregating library social media content</h2>
+        <p class="name">Coral Sheldon-Hess <span class="small">University of Alaska-Anchorage &mdash; Web Services Librarian</span></p>
+        <p class="libtype academic"></p>
+        <p class="language php">php</p>
+        <p class="link"><a class="btn btn-default btn-xs" href="https://github.com/csheldonhess/rss-cache-with-images">get the code</a></p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">collecting and validating reference statistics</h2>
+        <p class="name">Eric Phetteplace <span class="small">Chesapeake College &mdash; Emerging Technologies Librarian</span></p>
+        <p class="libtype academic public"></p>
+        <p class="language javascript">javascript</p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">automatic MARC record creation from patron-driven acquisitions</h2>
+        <p class="name">Becky Yoose <span class="small">Grinnell College &mdash; Discovery and Integrated Systems Librarian / Assistant Professor</span></p>
+        <p class="libtype academic"></p>
+        <p class="language python">python</p>
+        <p class="link"><a class="btn btn-default btn-xs" href="https://github.com/LibraryCodeYearIG/MARC-record-edit">get the code</a></p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">realtime library data dashboard</h2>
+        <p class="name">John Blyberg <span class="small">Darien Library &mdash; Assistant Director for Innovation and User Experience</span></p>
+        <p class="libtype public"></p>
+        <p class="language php">php</p>
+        <p class="link"><a class="btn btn-default btn-xs" href="https://github.com/jblyberg/databoard">get the code</a></p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">Serials Solutions statistics</h2>
+        <p class="name">Matthew Reidsma <span class="small">Grand Valley State University &mdash; Web Services Librarian</span></p>
+        <p class="libtype academic"></p>
+        <p class="language javascript php mysql">javascript, php, mysql</p>
+        <p class="link"><a class="btn btn-default btn-xs" href="https://github.com/gvsulib/Summon-Stats ">get the code</a></p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">EZproxy log analysis</h2>
+        <p class="name">Robin Camille Davis <span class="small">John Jay College of Criminal Justice (CUNY) &mdash; Emerging Technologies &amp; Distance Services Librarian</span></p>
+        <p class="libtype academic"></p>
+        <p class="language python">python</p>
+        <p class="link"><a class="btn btn-default btn-xs" href="https://github.com/robincamille/ezproxy-analysis/blob/master/ezp-analysis.py">get the code</a></p>
+        <p class="link"><a class="btn btn-default btn-xs" href="http://emerging.commons.gc.cuny.edu/2014/04/analyzing-ezproxy-logs-python/">learn more</a></p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">metadata quality control</h2>
+        <p class="name">Misty De Meo <span class="small">Canadian Museum for Human Rights &mdash; Digital Collections Technician</span></p>
+        <p class="libtype museum"></p>
+        <p class="language ruby">ruby</p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">faster digital forensics workflow</h2>
+        <p class="name">Sibyl Schaefer <span class="small">Rockefeller Archive Center &mdash; Assistant Director, Head of Digital Programs</span></p>
+        <p class="libtype archives"></p>
+        <p class="language bash">bash</p>
+        <p class="link"><a class="btn btn-default btn-xs" href="https://github.com/SibylSchaefer/Bash-automount">get the code</a></p>
+        <p class="link"><a class="btn btn-default btn-xs" href="http://acrl.ala.org/techconnect/?p=4085">learn more</a></p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">low-cost access to research in the developing world</h2>
+        <p class="name">Evviva Weinraub Lajoie <span class="small">Oregon State University Libraries &amp; Press &mdash; Director, Emerging Technologies &amp; Services</span></p>
+        <p class="libtype academic"></p>
+        <p class="language mysql php">mysql, php</p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">exporting DSpace metadata</h2>
+        <p class="name">nina de jesus <span class="small">York University &mdash; Digital Projects Librarian</span></p>
+        <p class="libtype academic"></p>
+        <p class="language bash">bash</p>
+        <p class="link"><a class="btn btn-default btn-xs" href="http://www.satifice.com/2014/10/22/exporting-the-metadata-of-a-range-of-handles-in-dspace">get the code</a></p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">whitelisting domains</h2>
+        <p class="name">Genny Engel <span class="small">Sonoma County Library &mdash; Webmaster</span></p>
+        <p class="libtype public"></p>
+        <p class="language php">php</p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">extracts metadata from Amazon to simplify acquisitions</h2>
+        <p class="name">Ken Irwin <span class="small"></span></p>
+        <p class="libtype academic">javascript</p>
+        <p class="language javascript"></p>
+        <p class="link"><a class="btn btn-default btn-xs" href="http://www6.wittenberg.edu/lib/ken/bookmarklets.php">get the code</a></p>
+      </div>
+    </div>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script type="text/javascript">
+    var $j = jQuery.noConflict();
+
+    $j(document).ready(function(){
+      // Show things that require js to work; they're hidden by default.
+      $j('.js-hide').show();
+
+      // Let's find out all the languages used by the programs in our tiles
+      // and make it possible to filter the tiles by those languages. Add
+      // filters for library type, too.
+      var targets_all = $j('.tile');
+      var targets = {}
+      var filter_languages_div = $j('#filter-languages');
+      var filter_libtype_div = $j('#filter-libtype');
+
+      // First, find all the languages; remember which tiles go with them; and
+      // add a button that lets us filter for each language.
+      $j('p.language').each(function() {
+        var keys = $j(this).attr('class');
+        keys = keys.split(' '); // attr returns a string; split it into an array
+        keys.shift(); // removes initial 'language' class, always first by HTML construction
+        keys = keys.sort();
+
+        // For each language not yet in our targets array, add a key which is the
+        // language name and a value which is all the tiles using that language.
+        // Also add a filtering button.
+        for (i = 0; i < keys.length; i++) {
+          var key = keys[i];
+          if (!(key in targets)) {
+            targets[key] = $j('p.language.' + key).parents('.tile');
+
+            filter_languages_div.append('<button id="' + key + '" class="btn btn-default btn-xs">' + key + '</button> &nbsp;');
+          }          
+        }
+      });
+
+      // Same thing, but for library types: find tiles corresponding to each type
+      // and set up filter buttons. Yes, we're totally assuming that there won't be 
+      // a single word which represents both a library type and a programming language.
+      // Also in a better world I'd have refactored this to be DRY.
+      $j('p.libtype').each(function() {
+        var keys = $j(this).attr('class');
+        keys = keys.split(' ');
+        keys.shift();
+
+        for (i = 0; i < keys.length; i++) {
+          var key = keys[i];
+          if (!(key in targets)) {
+            targets[key] = $j('p.libtype.' + key).parents('.tile');
+
+            filter_libtype_div.append('<button id="' + key + '" class="btn btn-default btn-xs">' + key + '</button> &nbsp;');
+          }          
+        }
+      });
+
+      // Actually perform filtering when the user clicks on a filtering button.
+      $j('#filters button').click(function() {
+
+        $j(this).toggleClass('active');
+
+        // Hide everything, then re-show selected content. Since a tile
+        // may have multiple languages and a library type, we can't just show/hide
+        // the tiles associated with the thing the user just clicked on; if they want
+        // to see all public libraries, we should do that even if they just toggled
+        // javascript. Or filtering, not and.
+        targets_all.hide();
+
+        $j('#filters button').each(function() {
+          if ($j(this).hasClass('active')) {
+            var button_id = $j(this).attr('id');
+            targets[button_id].show();          
+          }
+        });
+      });
+
+      // As long as we're here, scale all tiles to height of tallest, so background
+      // never shows.
+
+      // Harvest heights of all tiles and convert to numeric array.
+      var heights = targets_all.map(function() {
+        return $j(this).height();
+      }).get();
+      // Get largest value (the apply/null magic is needed because max() expects
+      // a comma-separated list, not an array).
+      var height = Math.max.apply(null, heights);
+      targets_all.height(height);
+
+      // Show/hide filters.
+      var filters_div = $j('#filters');
+      var filters_toggle = $j('#show-filters');
+      filters_toggle.click(function() {
+        filters_div.toggle();
+        $j(this).toggleClass('active');
+      });
+    })
+  </script>
+</body>
+</html>
+
+<!--
+"... tools can and should have character; people are more likely to use something that is fun to use and that they can relate to." Hillel Arnold
+
+"Listen to users for examples of tasks that are tedious or error-prone and think of ways to automate a solution." Terry Brady
+
+"[E]ven with reduced staffing, it is possible to achieve both quality and timeliness." Annie Glerum
+
+"I like that coding makes me feel that I'm not helpless, that I can solve some of the problems I face with tools at my disposal." Jeremy Darrington
+
+"...small simple programs can do a lot for the usefulness of a website." Amy Wharton
+
+"The code allows patrons to have nice things..." Shaun Ellis
+
+I learned to program from _why's Poignant Guide to Ruby, and I think this sentence is the very moment it clicked: "You will be writing stories for a machine." Misty De Meo
+
+"I was capable of building something that thousands of people across the world use to access electronic resources, which was really quite powerful and empowering for me [even though] I am not a natural programmer..." Evviva Weinraub Lajoie
+
+"Before this script I was largely a "copy this command and paste" type of user. After the script, I understand the linux/unix environment a lot more and feel much, much more comfortable using it to solve problems." nina de jesus
+-->
