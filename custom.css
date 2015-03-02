@@ -1,0 +1,163 @@
+    /*
+      incredibly obnoxious colors via google material design:
+      pink  #E91E63
+      purple #9C27B0
+      deep purple #673AB7
+      indigo #3F51B5
+      green #4CAF50
+      deep orange #FF5722
+    */
+
+    /* Typography and layout
+    ----------------------------------------------------------------------------*/
+    body {
+      font-family: 'Droid Sans', Helvetica, sans-serif;
+      font-size: 18px;
+      color: white;
+      background-color: #4CAF50;
+    }
+
+    /* thanks webtypography.net. Of course those multiples-of-16 are now a lie. */
+    h1 { font-size: 2.25em; font-weight: bold; /* 16x2.25=36 */ }
+    h2 { font-size: 1.5em;   /* 16x1.5=24 */ }
+    p, ul { font-size: 1.125em; /* 16x1.125=18 */ }
+    p.small, p.language, ul.small { font-size: 0.875em; /* 16x0.875=14 */ }
+    .btn-xs {font-size: 0.75em;  /* 16x0.75=12 */ }
+
+
+    h1 small, h1 small a {
+      color: #ccc;
+    }
+
+    h2.use {
+      font-family: Lobster;
+    }
+
+    a {
+      color: white;
+    }
+
+    .btn-xs {
+      color: #666;
+    }
+
+    #main {
+      margin-top: -20px;
+    }
+
+    #content {
+      margin-top: -20px;
+      background-color: white;
+      color: #333;
+      padding-bottom: 20px;
+    }
+
+    #content a {
+      color: #2979FF;
+    }
+
+    #content a:hover {
+      color: #E91E63;
+    }
+
+    /* Header styling 
+    ----------------------------------------------------------------------------*/
+    .page-header {
+      background-color: #4CAF50;
+    }
+
+    #header ul, .small-caps {
+      font-variant: small-caps;
+    }
+
+    #header ul a:hover, h1 small a:hover {
+      text-decoration: none;
+      border-bottom: 5px solid;
+      color: #ccc;
+    }
+
+    /* Tiles
+    ----------------------------------------------------------------------------*/
+    .tile {
+      border-top: 1px solid white;
+      border-right: 1px solid white;
+    }
+
+    .tile[style*="display: none"] {
+      /* no, seriously, don't take up any space */
+      width: 0;
+      height: 0;
+      padding: 0 !important;
+      min-height: 0;
+    }
+
+    .quote {
+      margin-top: 40px;
+      display: none;
+    }
+
+
+    /* Clear ends of rows to preserve vertical spacing when for-looping through
+       lists of tiles.
+
+       See http://www.bluthemes.com/blog/3/clearing-bootstrap-3-columns.
+       This is modified for Bootstrap 2, which is our version.
+       SO MUCH EASIER than throwing a |divisibleby into the for loop to break
+       and restart the row-fluid div at the end of each row.
+       Probably doesn't work on versions of IE below 8. Oh well.
+    */
+
+    .clear-columns > .tile {
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+
+    .clear-columns .tile.col-sm-6:nth-child(2n+1){
+      clear: left;
+      margin-left: 0;
+    }
+
+    /* same logic, but for colors */
+    .clear-columns .tile.col-sm-6:nth-child(3n+1){
+      background-color: #9C27B0;
+    }
+
+    .clear-columns .tile.col-sm-6:nth-child(3n+2){
+      background-color: #FF5722;
+    }
+
+    .clear-columns .tile.col-sm-6:nth-child(3n+3){
+      background-color: #E91E63;
+    }
+
+    /* Filtering
+    ----------------------------------------------------------------------------*/
+
+    .js-hide {
+      /* Hide things that require js to be shown; a script will reveal them on document ready. */
+      display: none;
+    }
+
+    #filters {
+      /* This has its own show/hide toggle, because it takes up lots of space. */
+      display: none;
+    }
+
+    #show-filters span.show-filters {
+      display: inherit;
+    }
+    #show-filters span.hide-filters {
+      display: none;
+    }
+
+    #show-filters.active span.show-filters {
+      display: none;
+    }
+    #show-filters.active span.hide-filters {
+      display: inherit;
+    }
+
+    p.libtype, p.demo {
+      display: none;
+    }
+

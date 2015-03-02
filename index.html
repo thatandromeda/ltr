@@ -10,157 +10,9 @@ TODO:
 <html>
 <head>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="custom.css">
   <link href='//fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
   <link href='//fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
-  <style type="text/css">
-    /*
-      incredibly obnoxious colors via google material design:
-      pink  #E91E63
-      purple #9C27B0
-      deep purple #673AB7
-      indigo #3F51B5
-      green #4CAF50
-      deep orange #FF5722
-    */
-    p.libtype, p.demo {
-      display: none;
-    }
-
-    /* Typography and layout
-    ----------------------------------------------------------------------------*/
-    body {
-      font-family: 'Droid Sans', Helvetica, sans-serif;
-      font-size: 18px;
-      color: white;
-      background-color: #4CAF50;
-    }
-
-    /* thanks webtypography.net. Of course those multiples-of-16 are now a lie. */
-    h1 { font-size: 2.25em; font-weight: bold; /* 16x2.25=36 */ }
-    h2 { font-size: 1.5em;   /* 16x1.5=24 */ }
-    p, ul { font-size: 1.125em; /* 16x1.125=18 */ }
-    p.small, p.language { font-size: 0.875em; /* 16x0.875=14 */ }
-    .btn-xs {font-size: 0.75em;  /* 16x0.75=12 */ }
-
-
-    h1 small, h1 small a {
-      color: #ccc;
-    }
-
-    h2.use {
-      font-family: Lobster;
-    }
-
-    a {
-      color: white;
-    }
-
-    .btn-xs {
-      color: #666;
-    }
-
-    #main {
-      margin-top: -20px;
-    }
-
-    /* Header styling 
-    ----------------------------------------------------------------------------*/
-    .page-header {
-      background-color: #4CAF50;
-    }
-
-    #header ul, .small-caps {
-      font-variant: small-caps;
-    }
-
-    #header ul a:hover, h1 small a:hover {
-      text-decoration: none;
-      border-bottom: 5px solid;
-      color: #ccc;
-    }
-
-    /* Tiles
-    ----------------------------------------------------------------------------*/
-    .tile {
-      border-bottom: 1px solid white;
-      border-right: 1px solid white;
-    }
-
-    .tile[style*="display: none"] {
-      /* no, seriously, don't take up any space */
-      width: 0;
-      height: 0;
-      padding: 0 !important;
-      min-height: 0;
-    }
-
-    .quote {
-      margin-top: 40px;
-      display: none;
-    }
-
-
-    /* Clear ends of rows to preserve vertical spacing when for-looping through
-       lists of tiles.
-
-       See http://www.bluthemes.com/blog/3/clearing-bootstrap-3-columns.
-       This is modified for Bootstrap 2, which is our version.
-       SO MUCH EASIER than throwing a |divisibleby into the for loop to break
-       and restart the row-fluid div at the end of each row.
-       Probably doesn't work on versions of IE below 8. Oh well.
-    */
-
-    .clear-columns > .tile {
-      padding-top: 20px;
-      padding-bottom: 20px;
-    }
-
-    .clear-columns .tile.col-sm-6:nth-child(2n+1){
-      clear: left;
-      margin-left: 0;
-    }
-
-    /* same logic, but for colors */
-    .clear-columns .tile.col-sm-6:nth-child(3n+1){
-      background-color: #9C27B0;
-    }
-
-    .clear-columns .tile.col-sm-6:nth-child(3n+2){
-      background-color: #FF5722;
-    }
-
-    .clear-columns .tile.col-sm-6:nth-child(3n+3){
-      background-color: #E91E63;
-    }
-
-    /* Filtering
-    ----------------------------------------------------------------------------*/
-
-    .js-hide {
-      /* Hide things that require js to be shown; a script will reveal them on document ready. */
-      display: none;
-    }
-
-    #filters {
-      /* This has its own show/hide toggle, because it takes up lots of space. */
-      display: none;
-    }
-
-    #show-filters span.show-filters {
-      display: inherit;
-    }
-    #show-filters span.hide-filters {
-      display: none;
-    }
-
-    #show-filters.active span.show-filters {
-      display: none;
-    }
-    #show-filters.active span.hide-filters {
-      display: inherit;
-    }
-
-  </style>
 </head>
 
 <body>
@@ -170,7 +22,7 @@ TODO:
         <h1>Coding for Librarians: Learning by Example <small><a href="http://andromedayelton.com">by Andromeda Yelton</a></small></h1>
         <ul class="list-inline list-unstyled">
           <li><a href="">get the book</a></p></li>
-          <li><a href="book.html">about the book</a></p></li>
+          <li><a href="book.html">about the report</a></p></li>
           <li><a href="site.html">about the site</a></p></li>
         </ul>        
       </div>
@@ -220,6 +72,13 @@ TODO:
         <p class="libtype public"></p>
         <p class="language python">python</p>
         <p class="link"><a class="btn btn-default btn-xs" href="https://github.com/everreau/sierra-scripts">get the code</a></p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">digital signage content queue</h2>
+        <p class="name">Matt Weaver <span class="small">Westlake Porter Public Library &mdash; Web Librarian</span></p>
+        <p class="libtype public"></p>
+        <p class="language python">php</p>
+        <p class="link"><a class="btn btn-default btn-xs" href="https://github.com/thatandromeda/ltr/blob/master/script_archives/signage_3.2.2.py">get the code</a></p>
       </div>
       <div class="tile col-sm-6">
         <h2 class="use">staff communication</h2>
@@ -383,6 +242,20 @@ TODO:
         <p class="link"><a class="btn btn-default btn-xs" href="http://www6.wittenberg.edu/lib/ken/bookmarklets.php">get the code</a></p>
       </div>
       <div class="tile col-sm-6">
+        <h2 class="use">collecting and validating reference statistics</h2>
+        <p class="name">Eric Phetteplace <span class="small">Chesapeake College &mdash; Emerging Technologies Librarian</span></p>
+        <p class="libtype academic public"></p>
+        <p class="language javascript">javascript</p>
+        <p class="link"><a class="btn btn-default btn-xs" href="https://github.com/thatandromeda/ltr/blob/master/script_archives/ref-analytics.js">get the code</a></p>
+      </div>
+      <div class="tile col-sm-6">
+        <h2 class="use">bulk edit ebook MARC records to prepend proxy URL</h2>
+        <p class="name">Eric Phetteplace <span class="small">Chesapeake College &mdash; Emerging Technologies Librarian</span></p>
+        <p class="libtype academic public"></p>
+        <p class="language javascript">python</p>
+        <p class="link"><a class="btn btn-default btn-xs" href="https://github.com/thatandromeda/ltr/blob/master/script_archives/proxy-ebooks.py">get the code</a></p>
+      </div>
+      <div class="tile col-sm-6">
         <h2 class="use">parsing robots.txt files to find attack bots</h2>
         <p class="name">Stuart Yeates <span class="small">Victoria University of Wellington &mdash; Technical Specialist</span></p>
         <p class="libtype academic"></p>
@@ -473,12 +346,6 @@ TODO:
         <p class="name">Sam Kome <span class="small">Claremont Colleges Library &mdash; Director, Collection Services and Scholarly Communication</span></p>
         <p class="libtype academic"></p>
         <p class="language python">python</p>
-      </div>
-      <div class="tile col-sm-6">
-        <h2 class="use">collecting and validating reference statistics</h2>
-        <p class="name">Eric Phetteplace <span class="small">Chesapeake College &mdash; Emerging Technologies Librarian</span></p>
-        <p class="libtype academic public"></p>
-        <p class="language javascript">javascript</p>
       </div>
       <div class="tile col-sm-6">
         <h2 class="use">metadata quality control</h2>
