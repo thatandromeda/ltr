@@ -26,6 +26,8 @@ TODO:
       display: none;
     }
 
+    /* Typography and layout
+    ----------------------------------------------------------------------------*/
     body {
       font-family: 'Droid Sans', Helvetica, sans-serif;
       font-size: 18px;
@@ -34,32 +36,12 @@ TODO:
     }
 
     /* thanks webtypography.net. Of course those multiples-of-16 are now a lie. */
-    h1 { font-size: 2.25em;  /* 16x2.25=36 */ }
+    h1 { font-size: 2.25em; font-weight: bold; /* 16x2.25=36 */ }
     h2 { font-size: 1.5em;   /* 16x1.5=24 */ }
     p, ul { font-size: 1.125em; /* 16x1.125=18 */ }
     p.small, p.language { font-size: 0.875em; /* 16x0.875=14 */ }
     .btn-xs {font-size: 0.75em;  /* 16x0.75=12 */ }
 
-    .tile[style*="display: none"] {
-      /* no, seriously, don't take up any space */
-      width: 0;
-      height: 0;
-      padding: 0 !important;
-      min-height: 0;
-    }
-
-    .tile {
-      border-bottom: 1px solid white;
-      border-right: 1px solid white;
-    }
-
-    .page-header {
-      background-color: #4CAF50;
-    }
-
-    h1 {
-      font-weight: bold;
-    }
 
     h1 small, h1 small a {
       color: #ccc;
@@ -77,6 +59,16 @@ TODO:
       color: #666;
     }
 
+    #main {
+      margin-top: -20px;
+    }
+
+    /* Header styling 
+    ----------------------------------------------------------------------------*/
+    .page-header {
+      background-color: #4CAF50;
+    }
+
     #header ul, .small-caps {
       font-variant: small-caps;
     }
@@ -86,6 +78,27 @@ TODO:
       border-bottom: 5px solid;
       color: #ccc;
     }
+
+    /* Tiles
+    ----------------------------------------------------------------------------*/
+    .tile {
+      border-bottom: 1px solid white;
+      border-right: 1px solid white;
+    }
+
+    .tile[style*="display: none"] {
+      /* no, seriously, don't take up any space */
+      width: 0;
+      height: 0;
+      padding: 0 !important;
+      min-height: 0;
+    }
+
+    .quote {
+      margin-top: 40px;
+      display: none;
+    }
+
 
     /* Clear ends of rows to preserve vertical spacing when for-looping through
        lists of tiles.
@@ -102,23 +115,26 @@ TODO:
       padding-bottom: 20px;
     }
 
-    .clear-columns .col-sm-6:nth-child(2n+1){
+    .clear-columns .tile.col-sm-6:nth-child(2n+1){
       clear: left;
       margin-left: 0;
     }
 
     /* same logic, but for colors */
-    .clear-columns .col-sm-6:nth-child(3n+1){
+    .clear-columns .tile.col-sm-6:nth-child(3n+1){
       background-color: #9C27B0;
     }
 
-    .clear-columns .col-sm-6:nth-child(3n+2){
+    .clear-columns .tile.col-sm-6:nth-child(3n+2){
       background-color: #FF5722;
     }
 
-    .clear-columns .col-sm-6:nth-child(3n+3){
+    .clear-columns .tile.col-sm-6:nth-child(3n+3){
       background-color: #E91E63;
     }
+
+    /* Filtering
+    ----------------------------------------------------------------------------*/
 
     .js-hide {
       /* Hide things that require js to be shown; a script will reveal them on document ready. */
@@ -143,6 +159,7 @@ TODO:
     #show-filters.active span.hide-filters {
       display: inherit;
     }
+
   </style>
 </head>
 
@@ -481,6 +498,52 @@ TODO:
         <p class="language javascript"></p>
         <p class="link"><a class="btn btn-default btn-xs" href="http://www6.wittenberg.edu/lib/ken/bookmarklets.php">get the code</a></p>
       </div>
+      <div class="col-sm-6">
+        <div class="quote">
+          <blockquote>&hellip;tools can and should have character; people are more likely to use something that is fun to use and that they can relate to.</blockquote>
+          <cite>Hillel Arnold</cite>
+        </div>
+
+        <div class="quote">
+          <blockquote>Listen to users for examples of tasks that are tedious or error-prone and think of ways to automate a solution.</blockquote>
+          <cite>Terry Brady</cite>        
+        </div>
+
+        <div class="quote">
+          <blockquote>Even with reduced staffing, it is possible to achieve both quality and timeliness.</blockquote>
+          <cite>Annie Glerum</cite>
+        </div>
+
+        <div class="quote">
+          <blockquote>I like that coding makes me feel that I'm not helpless, that I can solve some of the problems I face with tools at my disposal.</blockquote>
+          <cite>Jeremy Darrington</cite>        
+        </div>
+
+        <div class="quote">
+          <blockquote>&hellip;small simple programs can do a lot for the usefulness of a website.</blockquote>
+          <cite>Amy Wharton</cite>        
+        </div>
+
+        <div class="quote">
+          <blockquote>The code allows patrons to have nice things&hellip;</blockquote>
+          <cite>Shaun Ellis</cite>        
+        </div>
+
+        <div class="quote">
+          <blockquote>I learned to program from _why's Poignant Guide to Ruby, and I think this sentence is the very moment it clicked: "You will be writing stories for a machine."</blockquote>
+          <cite>Misty De Meo</cite>        
+        </div>
+
+        <div class="quote">
+          <blockquote>I was capable of building something that thousands of people across the world use to access electronic resources, which was really quite powerful and empowering for me [even though] I am not a natural programmer&hellip;</blockquote>
+          <cite>Evviva Weinraub Lajoie</cite>        
+        </div>
+
+        <div class="quote">
+          <blockquote>Before this script I was largely a "copy this command and paste" type of user. After the script, I understand the linux/unix environment a lot more and feel much, much more comfortable using it to solve problems.</blockquote>
+          <cite>nina de jesus</cite>
+        </div>
+      </div>
     </div>
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -540,6 +603,7 @@ TODO:
       });
 
       // Actually perform filtering when the user clicks on a filtering button.
+      // For the heck of it, give them a new quote too.
       $j('#filters button').click(function() {
 
         $j(this).toggleClass('active');
@@ -557,6 +621,8 @@ TODO:
             targets[button_id].show();          
           }
         });
+
+        show_quote();
       });
 
       // As long as we're here, scale all tiles to height of tallest, so background
@@ -578,27 +644,19 @@ TODO:
         filters_div.toggle();
         $j(this).toggleClass('active');
       });
+
+      var quotes = $j('.quote');
+      var quote_length = quotes.length
+
+      // Randomly populate the quote block.
+      function show_quote() {
+        index = Math.floor(Math.random()*quote_length);
+        quotes.hide();
+        quotes.eq(index).show();        
+      }
+
+      show_quote();
     })
   </script>
 </body>
 </html>
-
-<!--
-"... tools can and should have character; people are more likely to use something that is fun to use and that they can relate to." Hillel Arnold
-
-"Listen to users for examples of tasks that are tedious or error-prone and think of ways to automate a solution." Terry Brady
-
-"[E]ven with reduced staffing, it is possible to achieve both quality and timeliness." Annie Glerum
-
-"I like that coding makes me feel that I'm not helpless, that I can solve some of the problems I face with tools at my disposal." Jeremy Darrington
-
-"...small simple programs can do a lot for the usefulness of a website." Amy Wharton
-
-"The code allows patrons to have nice things..." Shaun Ellis
-
-I learned to program from _why's Poignant Guide to Ruby, and I think this sentence is the very moment it clicked: "You will be writing stories for a machine." Misty De Meo
-
-"I was capable of building something that thousands of people across the world use to access electronic resources, which was really quite powerful and empowering for me [even though] I am not a natural programmer..." Evviva Weinraub Lajoie
-
-"Before this script I was largely a "copy this command and paste" type of user. After the script, I understand the linux/unix environment a lot more and feel much, much more comfortable using it to solve problems." nina de jesus
--->
